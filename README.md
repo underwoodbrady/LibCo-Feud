@@ -1,5 +1,5 @@
 # LibCo-Feud
-Fast paced family feud remake for playing with a group of friends
+Fast paced family feud remake for quick fun with a group of friends
 
 Meant to be played on a web browser
 
