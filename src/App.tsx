@@ -1,10 +1,12 @@
 import { useState } from 'react'
 
+import Game from './scenes/Game'
+
 function App() {
 
   return (
     <div className="App">
-      <h1>New Vite App</h1>
+      <Game/>
     </div>
   )
 }
