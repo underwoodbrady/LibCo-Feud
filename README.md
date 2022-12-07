@@ -1,4 +1,4 @@
-![This is an image](https://www.familyfeud.com/wp-content/uploads/2017/09/familyfeud-fb.jpg)
+![This is an image](https://i.imgur.com/dgMG8bx.png)
 # LibCo-Feud
 Fast paced family feud remake for quick fun with a group of friends
 
