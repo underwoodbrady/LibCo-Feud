@@ -13,9 +13,9 @@ let Answer = ({ text, value, index, revealed }: AnswerProps) => {
     useEffect(()=>{
         setShown(false);
     },[text, value, revealed])
-    
+
     return (
-        <div className="bg-blue-400 p-4 w-56 h-[56px] text-left relative" onClick={()=>setShown(true)}>
+        <div className="bg-blue-400 p-4 w-56 h-[56px] text-left relative hover:cursor-pointer" onClick={()=>setShown(true)}>
             {(revealed || shown) && (
                 <>
                     <h3>

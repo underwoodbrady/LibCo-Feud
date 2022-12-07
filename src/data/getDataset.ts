@@ -1,4 +1,4 @@
-import fullList from "./answers5.txt";
+import fullList from "./fullDataset.txt";
 
 export const createFullArr = async() => {
     let initArr;

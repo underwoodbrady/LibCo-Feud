@@ -3,7 +3,7 @@ import QuestionDisplay from "../components/QuestionDisplay";
 import Answer from "../components/Answer";
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
-import { createFullArr } from "../data/getQuestions";
+import { createFullArr } from "../data/getDataset";
 
 type Answer = {
     text: string;
@@ -39,7 +39,7 @@ let Game = () => {
 
     let revealAllAnswers = () => {
         setRevealAll(true);
-    }
+    };
 
     return (
         <main className="flex justify-center flex-col items-center m-8">
@@ -47,16 +47,26 @@ let Game = () => {
                 <QuestionDisplay question={question} />
             </div>
             <div className="flex justify-between items-center mb-8">
-                <TeamBox name="Team 1" points={48} />
+                <TeamBox name="Team 1" points={0} />
                 <div className="grid grid-cols-2 bg-neutral-900 p-4 gap-4 mx-8">
                     {answers.map((val, ind) => (
-                        <Answer text={val.text} value={val.value} index={ind+1} revealed={revealAll}/>
+                        <Answer
+                            text={val.text}
+                            value={val.value}
+                            index={ind + 1}
+                            revealed={revealAll}
+                        />
                     ))}
                 </div>
-                <TeamBox name="Team 2" points={51} />
+                <TeamBox name="Team 2" points={0} />
             </div>
-            <Button label="Go To Next" onclick={newQuestion} />
-            <Button label="Reveal All" onclick={revealAllAnswers} />
+            <div className="space-y-2">
+                <p className="underline mb-2">
+                    Click Boxes to Reveal Individually
+                </p>
+                <Button label="Go Next" onclick={newQuestion} />
+                <Button label="Reveal All" onclick={revealAllAnswers} />
+            </div>
         </main>
     );
 };
