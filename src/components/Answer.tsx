@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 type AnswerProps = {
     text: string;
-    value: string;
+    value: number;
     index: number;
     revealed: boolean;
 };

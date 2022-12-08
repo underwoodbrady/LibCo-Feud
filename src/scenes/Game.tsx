@@ -4,21 +4,13 @@ import Answer from "../components/Answer";
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { createFullArr } from "../data/getDataset";
+import { AnswerType, QuestionList } from "../types/GameTypes";
 
-type Answer = {
-    text: string;
-    value: string;
-};
-
-type DataList = {
-    question: string;
-    answers: Answer[];
-};
 
 let Game = () => {
-    let [dataList, setDataList] = useState<DataList[]>([]);
+    let [dataList, setDataList] = useState<QuestionList[]>([]);
     let [question, setQuestion] = useState<string>("");
-    let [answers, setAnswers] = useState<Answer[]>([]);
+    let [answers, setAnswers] = useState<AnswerType[]>([]);
     let [revealAll, setRevealAll] = useState<boolean>(false);
 
     useEffect(() => {
