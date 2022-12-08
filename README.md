@@ -1,8 +1,8 @@
-![This is an image](https://i.imgur.com/dgMG8bx.png)
+![Logo](https://i.imgur.com/dgMG8bx.png)
 # LibCo-Feud
-Fast paced family feud remake for quick fun with a group of friends
+Fast paced Family Feud remake for quick fun with a group of friends
 
-Meant to be played on a web browser
+Meant to be played on a desktop web browser
 
 ## Install
 
@@ -12,7 +12,7 @@ Meant to be played on a web browser
 
     $ yarn dev
     
-## Environment
+## File Structure
 
 - components: reusable stateless components
 - screens: stateful composition of components
