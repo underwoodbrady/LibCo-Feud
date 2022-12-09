@@ -1,5 +1,5 @@
 export type AnswerType = {
-    text: string;
+    answer: string;
     value: number;
 };
 

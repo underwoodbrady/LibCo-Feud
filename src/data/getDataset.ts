@@ -19,7 +19,7 @@ export const createFullArr = async () => {
                 for (let e = 0, i = commaSeparated.length; e < i; e += 2) {
 
                     let answer: AnswerType = {
-                        text: commaSeparated[e],
+                        answer: commaSeparated[e],
                         value: Number(commaSeparated[e + 1]),
                     };
 

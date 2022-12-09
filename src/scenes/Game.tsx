@@ -5,13 +5,19 @@ import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { createFullArr } from "../data/getDataset";
 import { AnswerType, QuestionList } from "../types/GameTypes";
-
+import Icon from "../assets/icons"
 
 let Game = () => {
     let [dataList, setDataList] = useState<QuestionList[]>([]);
     let [question, setQuestion] = useState<string>("");
     let [answers, setAnswers] = useState<AnswerType[]>([]);
     let [revealAll, setRevealAll] = useState<boolean>(false);
+    let [showWrong, setShowWrong] = useState<boolean>(false);
+
+    let[teamScores, setTeamScores] = useState({
+        team1: 0,
+        team2: 0,
+    })
 
     useEffect(() => {
         createFullArr().then((fullArr: any) => {
@@ -33,24 +39,39 @@ let Game = () => {
         setRevealAll(true);
     };
 
+    let updateTeamScore = (team: number, score: number) => {
+        if(team===1)
+            setTeamScores({...teamScores, team1: teamScores.team1 + score})
+        if(team===2)
+            setTeamScores({...teamScores, team2: teamScores.team2 + score})
+    }
+
+    let wrongAnswer = () => {
+        setShowWrong(true);
+        setTimeout(()=>{
+            setShowWrong(false);
+        },500);
+    }
+
     return (
         <main className="flex justify-center flex-col items-center m-8">
             <div className="mb-8">
                 <QuestionDisplay question={question} />
             </div>
             <div className="flex justify-between items-center mb-8">
-                <TeamBox name="Team 1" points={0} />
-                <div className="grid grid-cols-2 bg-neutral-900 p-4 gap-4 mx-8">
+                <TeamBox name="Team 1" points={teamScores.team1} onclick={()=>updateTeamScore(1, 1)} />
+                <div className="relative grid grid-cols-2 bg-neutral-900 p-4 gap-4 mx-8">
                     {answers.map((val, ind) => (
                         <Answer
-                            text={val.text}
+                            text={val.answer}
                             value={val.value}
                             index={ind + 1}
                             revealed={revealAll}
                         />
                     ))}
+                    {showWrong && <img src={Icon.wrong} className="w-28 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"/>}
                 </div>
-                <TeamBox name="Team 2" points={0} />
+                <TeamBox name="Team 2" points={teamScores.team2} onclick={()=>updateTeamScore(2, 1)} />
             </div>
             <div className="space-y-2">
                 <p className="underline mb-2">
@@ -59,6 +80,7 @@ let Game = () => {
                 <Button label="Go Next" onclick={newQuestion} />
                 <Button label="Reveal All" onclick={revealAllAnswers} />
             </div>
+            <Button label="Wrong Answer" onclick={wrongAnswer} />
         </main>
     );
 };

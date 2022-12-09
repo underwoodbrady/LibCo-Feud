@@ -1,6 +1,6 @@
 type ButtonProps = {
     label: string;
-    onclick: any;
+    onclick: ()=>void;
 };
 
 let Button = ({ label, onclick }: ButtonProps) => {
