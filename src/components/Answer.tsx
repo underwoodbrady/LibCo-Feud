@@ -5,17 +5,23 @@ type AnswerProps = {
     value: number;
     index: number;
     revealed: boolean;
+    onclick: () => void;
 };
 
-let Answer = ({ text, value, index, revealed }: AnswerProps) => {
+let Answer = ({ text, value, index, revealed, onclick }: AnswerProps) => {
     let [shown, setShown] = useState<boolean>(false);
 
     useEffect(()=>{
         setShown(false);
     },[text, value, revealed])
 
+    const answerClicked= () =>{
+        setShown(true)
+        onclick()
+    }
+
     return (
-        <div className="bg-blue-400 p-4 w-56 h-[56px] text-left relative hover:cursor-pointer" onClick={()=>setShown(true)}>
+        <div className="bg-blue-400 p-4 w-56 h-[56px] text-left relative hover:cursor-pointer" onClick={answerClicked}>
             {(revealed || shown) && (
                 <>
                     <h3>

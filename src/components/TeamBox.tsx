@@ -1,17 +1,16 @@
 type TeamBoxProps = {
     name: string;
     points: number;
-    onclick?: ()=>void;
+    isTurn: boolean;
 };
 
-let TeamBox = ({ name, points, onclick }: TeamBoxProps) => {
+let TeamBox = ({ name, points, isTurn }: TeamBoxProps) => {
     return (
         <div className="flex items-center flex-col">
-            <h2 className="mb-4">{name}</h2>
+            <h2 className={isTurn ? "mb-4 text-yellow-300": "mb-4"}>{name}</h2>
             <div className="w-24 h-24 bg-blue-300 flex justify-center items-center">
                 <p className="font-semibold text-xl">{points}</p>
             </div>
-            <button className="bg-blue-400 h-8 w-full" onClick={onclick}>+</button>
         </div>
     );
 };
