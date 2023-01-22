@@ -19,6 +19,8 @@ let Game = () => {
         team2: 0,
     })
 
+    let [currentTeam, setCurrentTeam] = useState(Math.floor(Math.random()*2)+1);
+    
     useEffect(() => {
         createFullArr().then((fullArr: any) => {
             const randomNum = Math.floor(Math.random() * fullArr.length);
@@ -53,13 +55,18 @@ let Game = () => {
         },500);
     }
 
+    let switchTeam = () => {
+        if(currentTeam == 1) {setCurrentTeam(2)}
+        else if(currentTeam == 2) {setCurrentTeam(1)}
+    }
+
     return (
         <main className="flex justify-center flex-col items-center m-8">
             <div className="mb-8">
                 <QuestionDisplay question={question} />
             </div>
             <div className="flex justify-between items-center mb-8">
-                <TeamBox name="Team 1" points={teamScores.team1} onclick={()=>updateTeamScore(1, 1)} />
+                <TeamBox name="Team 1" points={teamScores.team1} isTurn={currentTeam==1} />
                 <div className="relative grid grid-cols-2 bg-neutral-900 p-4 gap-4 mx-8">
                     {answers.map((val, ind) => (
                         <Answer
@@ -67,11 +74,12 @@ let Game = () => {
                             value={val.value}
                             index={ind + 1}
                             revealed={revealAll}
+                            onclick={() => updateTeamScore(currentTeam, val.value)}
                         />
                     ))}
                     {showWrong && <img src={Icon.wrong} className="w-28 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"/>}
                 </div>
-                <TeamBox name="Team 2" points={teamScores.team2} onclick={()=>updateTeamScore(2, 1)} />
+                <TeamBox name="Team 2" points={teamScores.team2} isTurn={currentTeam==2}/>
             </div>
             <div className="space-y-2">
                 <p className="underline mb-2">
@@ -81,6 +89,7 @@ let Game = () => {
                 <Button label="Reveal All" onclick={revealAllAnswers} />
             </div>
             <Button label="Wrong Answer" onclick={wrongAnswer} />
+            <Button label="Switch Current Team" onclick={switchTeam} />
         </main>
     );
 };
