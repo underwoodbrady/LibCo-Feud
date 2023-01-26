@@ -67,7 +67,7 @@ let Game = () => {
             </div>
             <div className="flex justify-between items-center mb-8">
                 <TeamBox name="Team 1" points={teamScores.team1} isTurn={currentTeam==1} />
-                <div className="relative grid grid-cols-2 bg-neutral-900 p-4 gap-4 mx-8">
+                <div className="relative grid grid-rows-4 grid-cols-2 grid-flow-col bg-neutral-900 p-4 gap-4 mx-8">
                     {answers.map((val, ind) => (
                         <Answer
                             text={val.answer}
@@ -75,6 +75,16 @@ let Game = () => {
                             index={ind + 1}
                             revealed={revealAll}
                             onclick={() => updateTeamScore(currentTeam, val.value)}
+                            key={ind + 1}
+                        />
+                    ))}
+                    {answers.length < 8 && [...Array(8-answers.length)].map((val, ind)=> (
+                        <Answer
+                            text=""
+                            value={0}
+                            onclick={()=>{}}
+                            key={answers.length+ind+1}
+                            blank={true}
                         />
                     ))}
                     {showWrong && <img src={Icon.wrong} className="w-28 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"/>}

@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 type AnswerProps = {
     text: string;
     value: number;
-    index: number;
-    revealed: boolean;
+    index?: number;
+    revealed?: boolean;
     onclick: () => void;
+    blank?: boolean
 };
 
-let Answer = ({ text, value, index, revealed, onclick }: AnswerProps) => {
+let Answer = ({ text, value, index, revealed, onclick, blank }: AnswerProps) => {
     let [shown, setShown] = useState<boolean>(false);
 
     useEffect(()=>{
@@ -16,7 +17,7 @@ let Answer = ({ text, value, index, revealed, onclick }: AnswerProps) => {
     },[text, value, revealed])
 
     const answerClicked= () =>{
-        setShown(true)
+        setShown(!blank)
         onclick()
     }
 
