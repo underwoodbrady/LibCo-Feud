@@ -6,10 +6,9 @@ type AnswerProps = {
     index?: number;
     revealed?: boolean;
     onclick: () => void;
-    blank?: boolean
 };
 
-let Answer = ({ text, value, index, revealed, onclick, blank }: AnswerProps) => {
+let Answer = ({ text, value, index, revealed, onclick }: AnswerProps) => {
     let [shown, setShown] = useState<boolean>(false);
 
     useEffect(()=>{
@@ -17,7 +16,7 @@ let Answer = ({ text, value, index, revealed, onclick, blank }: AnswerProps) => 
     },[text, value, revealed])
 
     const answerClicked= () =>{
-        setShown(!blank)
+        setShown(true)
         onclick()
     }
 
