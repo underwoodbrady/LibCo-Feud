@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 type AnswerProps = {
     text: string;
     value: number;
-    index: number;
-    revealed: boolean;
+    index?: number;
+    revealed?: boolean;
     onclick: () => void;
 };
 
