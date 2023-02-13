@@ -23,6 +23,11 @@ let Game = () => {
         Math.floor(Math.random() * 2) + 1
     );
 
+    let [teamLives, setTeamLives] = useState({
+        team1: 3,
+        team2: 3,
+    });
+
     useEffect(() => {
         createFullArr().then((fullArr: any) => {
             const randomNum = Math.floor(Math.random() * fullArr.length);
@@ -50,7 +55,19 @@ let Game = () => {
             setTeamScores({ ...teamScores, team2: teamScores.team2 + score });
     };
 
+    let removeTeamLife = (team: number) => {
+        if (team === 1 && teamLives.team1 > 0)
+            setTeamLives({ ...teamLives, team1: teamLives.team1 - 1 });
+        if (team === 2 && teamLives.team2 > 0)
+            setTeamLives({ ...teamLives, team2: teamLives.team2 - 1 });
+    };
+
+    let resetLives = () => {
+        setTeamLives({ team1: 3, team2: 3 });
+    };
+
     let wrongAnswer = () => {
+        removeTeamLife(currentTeam);
         setShowWrong(true);
         setTimeout(() => {
             setShowWrong(false);
@@ -75,6 +92,10 @@ let Game = () => {
                     name="Team 1"
                     points={teamScores.team1}
                     isTurn={currentTeam == 1}
+                    lives={teamLives.team1}
+                    updateScore={(score) =>
+                        updateTeamScore(1, score - teamScores.team1)
+                    }
                 />
                 <div className="relative grid grid-rows-4 grid-cols-2 grid-flow-col bg-neutral-900 p-4 gap-4 mx-8">
                     {answers.map((val, ind) => (
@@ -104,16 +125,23 @@ let Game = () => {
                     name="Team 2"
                     points={teamScores.team2}
                     isTurn={currentTeam == 2}
+                    lives={teamLives.team2}
+                    updateScore={(score) =>
+                        updateTeamScore(2, score - teamScores.team2)
+                    }
                 />
             </div>
-            <div className="space-y-2">
+            <div>
                 <p className="underline mb-2">
                     Click Boxes to Reveal Individually
                 </p>
                 <Button label="Go Next" onclick={newQuestion} />
                 <Button label="Reveal All" onclick={revealAllAnswers} />
             </div>
-            <Button label="Wrong Answer" onclick={wrongAnswer} />
+            <div>
+                <Button label="Wrong Answer" onclick={wrongAnswer} />
+                <Button label="Reset Lives" onclick={resetLives} />
+            </div>
             <Button label="Switch Current Team" onclick={switchTeam} />
         </main>
     );
