@@ -138,18 +138,6 @@ let Game = () => {
                 <Button  onclick={revealAllAnswers} icon="view"/>
                 <Button label="Next" onclick={newQuestion} icon="next"/>
             </div>
-            {/**
-                 *     <div>
-                <Button label="Go Next" onclick={newQuestion} />
-                <Button label="Reveal All" onclick={revealAllAnswers} />
-            </div>
-            <div>
-                <Button label="Wrong Answer" onclick={wrongAnswer} />
-                <Button label="Reset Lives" onclick={resetLives} />
-            </div>
-            <Button label="Switch Current Team" onclick={switchTeam} />
-                 * 
-                 */}
         </main>
     );
 };
