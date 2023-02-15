@@ -71,7 +71,7 @@ let Game = () => {
         setShowWrong(true);
         setTimeout(() => {
             setShowWrong(false);
-        }, 500);
+        }, 1000);
     };
 
     let switchTeam = () => {
@@ -83,11 +83,11 @@ let Game = () => {
     };
 
     return (
-        <main className="flex justify-center flex-col items-center m-8">
-            <div className="mb-8">
+        <main className="flex justify-between flex-col items-center h-screen bg-black/10">
+            <div className="">
                 <QuestionDisplay question={question} />
             </div>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between px-12 items-center my-auto flex-1 w-full">
                 <TeamBox
                     name="Team 1"
                     points={teamScores.team1}
@@ -97,7 +97,7 @@ let Game = () => {
                         updateTeamScore(1, score - teamScores.team1)
                     }
                 />
-                <div className="relative grid grid-rows-4 grid-cols-2 grid-flow-col bg-neutral-900 p-4 gap-4 mx-8">
+                <div className="relative grid grid-rows-4 grid-cols-2 grid-flow-col bg-white p-1 gap-1 mx-8 rounded-sm">
                     {answers.map((val, ind) => (
                         <Answer
                             text={val.answer}
@@ -112,11 +112,11 @@ let Game = () => {
                     ))}
                     {answers.length < 8 &&
                         [...Array(8 - answers.length)].map((val, ind) => (
-                            <div className="bg-blue-400 p-4 w-56 h-[56px] text-left relative hover:cursor-pointer"></div>
+                            <div className="bg-gradient-to-b from-[#6591E0] to-[#1157CE] p-4 w-60 h-[60px] text-left relative hover:cursor-pointer"></div>
                         ))}
                     {showWrong && (
                         <img
-                            src={Icon.wrong}
+                            src={Icon.smallWrong}
                             className="w-28 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
                         />
                     )}
@@ -131,10 +131,15 @@ let Game = () => {
                     }
                 />
             </div>
-            <div>
-                <p className="underline mb-2">
-                    Click Boxes to Reveal Individually
-                </p>
+            <div className="w-[600px] h-[90px] bg-[#021938] border-[#222A34] border-4 rounded-lg flex -mb-2 justify-around p-4">
+                <Button label="Wrong" onclick={wrongAnswer} red icon="wrong"/>
+                <Button onclick={resetLives} icon="reset"/>
+                <Button  onclick={switchTeam} icon="switch"/>
+                <Button  onclick={revealAllAnswers} icon="view"/>
+                <Button label="Next" onclick={newQuestion} icon="next"/>
+            </div>
+            {/**
+                 *     <div>
                 <Button label="Go Next" onclick={newQuestion} />
                 <Button label="Reveal All" onclick={revealAllAnswers} />
             </div>
@@ -143,6 +148,8 @@ let Game = () => {
                 <Button label="Reset Lives" onclick={resetLives} />
             </div>
             <Button label="Switch Current Team" onclick={switchTeam} />
+                 * 
+                 */}
         </main>
     );
 };
