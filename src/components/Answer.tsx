@@ -21,16 +21,22 @@ let Answer = ({ text, value, index, revealed, onclick }: AnswerProps) => {
     }
 
     return (
-        <div className="bg-blue-400 p-4 w-56 h-[56px] text-left relative hover:cursor-pointer" onClick={answerClicked}>
-            {(revealed || shown) && (
-                <>
-                    <h3>
-                        {index}. {text}
+        <div className={revealed || shown ? "bg-[#013EA4] w-60 h-[60px] text-left relative":"bg-gradient-to-b from-[#6591E0] to-[#1157CE] w-60 h-[60px] text-left relative hover:cursor-pointer"} onClick={answerClicked}>
+            {(revealed || shown) ? (
+                <div className="p-4">
+                    <h3 className="uppercase font-semibold">
+                        {text}
                     </h3>
-                    <div className="absolute right-0 top-0 h-full bg-blue-300 w-14 flex justify-center items-center">
-                        <p className="font-semibold">{value}</p>
+                    <div className="absolute right-0 top-0 h-full w-14 flex justify-center items-center bg-gradient-to-b from-[#6591E0] to-[#1157CE]">
+                        <p className="font-bold text-xl">{value}</p>
                     </div>
-                </>
+                </div>
+            ): (
+                <div className="w-full h-full flex justify-center items-center">
+                    <div className=" rounded-[50%] w-16 h-[48px] bg-[#0C2C7D] border-[#3D5CAC] border-2 shadow-inner flex text-2xl font-bold justify-center items-center">
+                        {index}
+                    </div>
+                </div>
             )}
         </div>
     );

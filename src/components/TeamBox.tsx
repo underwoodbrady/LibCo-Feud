@@ -23,39 +23,53 @@ let TeamBox = ({ name, points, isTurn, lives, updateScore }: TeamBoxProps) => {
     };
 
     return (
-        <div className="flex items-center flex-col">
-            <h2 className={isTurn ? "mb-4 text-yellow-200 font-bold" : "mb-4 text-neutral-200"}>{name}</h2>
-            <div className="w-24 h-24 bg-blue-300 flex justify-center items-center mb-4">
-                {isEditingScore ? (
-                    <div className="flex flex-col justify-center items-center">
-                        <input
-                            type="number"
-                            name="score"
-                            className="text-white bg-blue-400 w-16 outline-none"
-                            value={editedScore}
-                            onChange={(e) => setEditedScore(e.target.value)}
-                        />
-                        <button
-                            className="text-sm bg-blue-500 w-full"
-                            onClick={onUpdate}>
-                            Update
-                        </button>
-                    </div>
-                ) : (
+        <div
+            className={
+                isTurn
+                    ? "w-24 bg-[#040c68] border-[#FFB104] border-2 rounded-lg text-center drop"
+                    : "w-24 bg-[#040c68] border-[#1075B1] border-2 rounded-lg text-center"
+            }>
+            <h2
+                className={
+                    isTurn
+                        ? "text-[#FFB104] font-bold my-2"
+                        : "text-white my-2"
+                }>
+                {name}
+            </h2>
+
+            {isEditingScore ? (
+                <div className="flex flex-col justify-center items-center">
+                    <input
+                        type="number"
+                        name="score"
+                        className="text-white bg-transparent text-xl font-semibold text-center w-16 outline-none mb-2"
+                        value={editedScore}
+                        onChange={(e) => setEditedScore(e.target.value)}
+                    />
                     <button
-                        className="font-semibold text-xl"
-                        onClick={() => setIsEditingScore(true)}>
-                        {points}
+                        className="text-sm bg-[#0345b3] rounded-lg w-full py-1"
+                        onClick={onUpdate}>
+                        Update
                     </button>
-                )}
-            </div>
-            <div className="flex space-x-4 w-full h-5">
-                {Array(lives).fill("").map((num)=>{
-                    return(
-                        <img src={Icon.heart} width={20}/>
-                    )
-                })}
-            </div>
+                </div>
+            ) : (
+                <button
+                    className="font-semibold text-2xl text-center h-full mb-4 text-white"
+                    onClick={() => setIsEditingScore(true)}>
+                    {points}
+                </button>
+            )}
+
+            {(3 - lives >= 1) && (
+                <div className="flex space-x-2 mb-3 justify-center">
+                    {Array(3 - lives)
+                        .fill("")
+                        .map((num) => {
+                            return <img src={Icon.smallWrong} width={16} />;
+                        })}
+                </div>
+            )}
         </div>
     );
 };
