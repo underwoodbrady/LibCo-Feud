@@ -7,9 +7,12 @@ import { createFullArr } from "../data/getDataset";
 import { AnswerType, QuestionList } from "../types/GameTypes";
 import Icon from "../assets/icons";
 
+const randomizeOrder = false;
+
 let Game = () => {
     let [dataList, setDataList] = useState<QuestionList[]>([]);
     let [question, setQuestion] = useState<string>("");
+    let [questionNumber, setQuestionNumber] = useState<number>(0)
     let [answers, setAnswers] = useState<AnswerType[]>([]);
     let [revealAll, setRevealAll] = useState<boolean>(false);
     let [showWrong, setShowWrong] = useState<boolean>(false);
@@ -45,22 +48,48 @@ let Game = () => {
 
     let [answerRevealed, setAnswerRevealed] = useState<AnswerRevealed>(noAnswersRevealed);
 
+    let getRandomNumber = () => Math.floor(Math.random() * dataList.length);
+
     useEffect(() => {
         createFullArr().then((fullArr: any) => {
-            const randomNum = Math.floor(Math.random() * fullArr.length);
-            setQuestion(fullArr[randomNum].question);
-            setAnswers(fullArr[randomNum].answers);
+            if (randomizeOrder) {
+                const tempRandomNumber = getRandomNumber();
+                setQuestion(fullArr[tempRandomNumber].question);
+                setAnswers(fullArr[tempRandomNumber].answers);
+            } else {
+                setQuestion(fullArr[questionNumber].question);
+                setAnswers(fullArr[questionNumber].answers);
+            }
+
             setDataList(fullArr);
         });
     }, []);
 
-    let newQuestion = () => {
+    let newQuestion = (question: number) => {
         setRevealAll(false);
         setAnswerRevealed(noAnswersRevealed);
-        const randomNum = Math.floor(Math.random() * dataList.length);
-        setQuestion(dataList[randomNum].question);
-        setAnswers(dataList[randomNum]?.answers);
+        setQuestion(dataList[question].question);
+        setAnswers(dataList[question]?.answers);
+        setQuestionNumber(question);
     };
+
+    let nextQuestion = () => {
+        if (randomizeOrder){
+            newQuestion(getRandomNumber())
+            return
+        }
+        if (questionNumber < dataList.length)
+            newQuestion(questionNumber + 1);
+    }
+
+    let previousQuestion = () => {
+        if (randomizeOrder){
+            newQuestion(getRandomNumber())
+            return
+        }
+        if (questionNumber > 0)
+            newQuestion(questionNumber - 1);
+    }
 
     let revealAnswer = (answer: number) => {
         setAnswerRevealed({ ...answerRevealed, [answer]: true })
@@ -117,10 +146,10 @@ let Game = () => {
                 revealAllAnswers();
                 break;
             case "ArrowRight":
-                newQuestion();
+                nextQuestion();
                 break;
             case "ArrowLeft":
-                // Your code for handling left arrow key
+                previousQuestion();
                 break;
             case "Digit1":
                 revealAnswer(0);
@@ -214,7 +243,7 @@ let Game = () => {
                 <Button onclick={resetLives} icon="reset" />
                 <Button onclick={switchTeam} icon="switch" />
                 <Button onclick={revealAllAnswers} icon="view" />
-                <Button label="Next" onclick={newQuestion} icon="next" />
+                <Button label="Next" onclick={() => nextQuestion()} icon="next" />
             </div>
         </main>
     );

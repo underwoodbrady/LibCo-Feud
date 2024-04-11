@@ -21,9 +21,9 @@ let Answer = ({ text, value, index, revealed, onclick }: AnswerProps) => {
     }
 
     return (
-        <div className={revealed || shown ? "bg-[#013EA4] w-60 h-[60px] text-left relative":"bg-gradient-to-b from-[#6591E0] to-[#1157CE] w-60 h-[60px] text-left relative hover:cursor-pointer"} onClick={answerClicked}>
+        <div className={revealed || shown ? "bg-[#013EA4] w-60 h-[60px] text-left relative":"bg-gradient-to-b from-[#6591E0] to-[#1157CE] w-60 h-[60px] text-left relative cursor-pointer"} onClick={answerClicked}>
             {(revealed || shown) ? (
-                <div className="p-4">
+                <div className="p-4 mr-14">
                     <h3 className="uppercase font-semibold">
                         {text}
                     </h3>

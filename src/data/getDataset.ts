@@ -1,4 +1,4 @@
-import fullList from "./fullDataset.txt";
+import fullList from "./treyDataset.txt";
 import { AnswerType, QuestionList } from "../types/GameTypes";
 
 export const createFullArr = async () => {
@@ -11,7 +11,7 @@ export const createFullArr = async () => {
             finalArr = [];
             for (let i in initArr) {
 
-                let commaSeparated = initArr[i].split("\t");
+                let commaSeparated = initArr[i].split(",");
                 let question = commaSeparated.shift();
                 let answers = [];
                 let structuredData : QuestionList;
