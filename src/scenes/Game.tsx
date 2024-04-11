@@ -2,14 +2,17 @@ import TeamBox from "../components/TeamBox";
 import QuestionDisplay from "../components/QuestionDisplay";
 import Answer from "../components/Answer";
 import Button from "../components/Button";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createFullArr } from "../data/getDataset";
 import { AnswerType, QuestionList } from "../types/GameTypes";
 import Icon from "../assets/icons";
 
+const randomizeOrder = false;
+
 let Game = () => {
     let [dataList, setDataList] = useState<QuestionList[]>([]);
     let [question, setQuestion] = useState<string>("");
+    let [questionNumber, setQuestionNumber] = useState<number>(0)
     let [answers, setAnswers] = useState<AnswerType[]>([]);
     let [revealAll, setRevealAll] = useState<boolean>(false);
     let [showWrong, setShowWrong] = useState<boolean>(false);
@@ -28,21 +31,70 @@ let Game = () => {
         team2: 3,
     });
 
+    interface AnswerRevealed {
+        [key: number]: boolean;
+    }
+
+    const noAnswersRevealed: AnswerRevealed = {
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+        6: false,
+        7: false,
+        8: false,
+    }
+
+    let [answerRevealed, setAnswerRevealed] = useState<AnswerRevealed>(noAnswersRevealed);
+
+    let getRandomNumber = () => Math.floor(Math.random() * dataList.length);
+
     useEffect(() => {
         createFullArr().then((fullArr: any) => {
-            const randomNum = Math.floor(Math.random() * fullArr.length);
-            setQuestion(fullArr[randomNum].question);
-            setAnswers(fullArr[randomNum].answers);
+            if (randomizeOrder) {
+                const tempRandomNumber = getRandomNumber();
+                setQuestion(fullArr[tempRandomNumber].question);
+                setAnswers(fullArr[tempRandomNumber].answers);
+            } else {
+                setQuestion(fullArr[questionNumber].question);
+                setAnswers(fullArr[questionNumber].answers);
+            }
+
             setDataList(fullArr);
         });
     }, []);
 
-    let newQuestion = () => {
+    let newQuestion = (question: number) => {
         setRevealAll(false);
-        const randomNum = Math.floor(Math.random() * dataList.length);
-        setQuestion(dataList[randomNum].question);
-        setAnswers(dataList[randomNum]?.answers);
+        setAnswerRevealed(noAnswersRevealed);
+        setQuestion(dataList[question].question);
+        setAnswers(dataList[question]?.answers);
+        setQuestionNumber(question);
     };
+
+    let nextQuestion = () => {
+        if (randomizeOrder){
+            newQuestion(getRandomNumber())
+            return
+        }
+        if (questionNumber < dataList.length)
+            newQuestion(questionNumber + 1);
+    }
+
+    let previousQuestion = () => {
+        if (randomizeOrder){
+            newQuestion(getRandomNumber())
+            return
+        }
+        if (questionNumber > 0)
+            newQuestion(questionNumber - 1);
+    }
+
+    let revealAnswer = (answer: number) => {
+        setAnswerRevealed({ ...answerRevealed, [answer]: true })
+        updateTeamScore(currentTeam, answers[answer].value)
+    }
 
     let revealAllAnswers = () => {
         setRevealAll(true);
@@ -82,14 +134,69 @@ let Game = () => {
         }
     };
 
+    const handleKeyBoard = useCallback((event: KeyboardEvent) => {
+        switch (event.code) {
+            case "Space":
+                switchTeam();
+                break;
+            case "Backspace":
+                resetLives();
+                break;
+            case "Enter":
+                revealAllAnswers();
+                break;
+            case "ArrowRight":
+                nextQuestion();
+                break;
+            case "ArrowLeft":
+                previousQuestion();
+                break;
+            case "Digit1":
+                revealAnswer(0);
+                break;
+            case "Digit2":
+                revealAnswer(1);
+                break;
+            case "Digit3":
+                revealAnswer(2);
+                break;
+            case "Digit4":
+                revealAnswer(3);
+                break;
+            case "Digit5":
+                revealAnswer(4);
+                break;
+            case "Digit6":
+                revealAnswer(5);
+                break;
+            case "Digit7":
+                revealAnswer(6);
+                break;
+            case "Digit8":
+                revealAnswer(7);
+                break;
+            case "Digit9":
+                wrongAnswer();
+                break;
+        }
+    }, [currentTeam, setCurrentTeam, teamLives, setTeamLives, revealAll, setRevealAll, teamLives, setTeamLives, answerRevealed, setAnswerRevealed, teamScores, updateTeamScore, answers, setAnswers, question, setQuestion]);
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyBoard);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyBoard);
+        }
+    }, [handleKeyBoard])
+
     return (
-        <main className="flex justify-between flex-col items-center h-screen bg-black/10">
+        <main className="flex justify-between flex-col items-center h-screen bg-black/20">
             <div className="">
                 <QuestionDisplay question={question} />
             </div>
             <div className="flex justify-between px-12 items-center my-auto flex-1 w-full">
                 <TeamBox
-                    name="Team 1"
+                    name="Libco"
                     points={teamScores.team1}
                     isTurn={currentTeam == 1}
                     lives={teamLives.team1}
@@ -103,7 +210,7 @@ let Game = () => {
                             text={val.answer}
                             value={val.value}
                             index={ind + 1}
-                            revealed={revealAll}
+                            revealed={revealAll || answerRevealed[ind]}
                             onclick={() =>
                                 updateTeamScore(currentTeam, val.value)
                             }
@@ -122,7 +229,7 @@ let Game = () => {
                     )}
                 </div>
                 <TeamBox
-                    name="Team 2"
+                    name="Koch Cunts"
                     points={teamScores.team2}
                     isTurn={currentTeam == 2}
                     lives={teamLives.team2}
@@ -132,11 +239,11 @@ let Game = () => {
                 />
             </div>
             <div className="w-[600px] h-[90px] bg-[#021938] border-[#222A34] border-4 rounded-lg flex -mb-2 justify-around p-4">
-                <Button label="Wrong" onclick={wrongAnswer} red icon="wrong"/>
-                <Button onclick={resetLives} icon="reset"/>
-                <Button  onclick={switchTeam} icon="switch"/>
-                <Button  onclick={revealAllAnswers} icon="view"/>
-                <Button label="Next" onclick={newQuestion} icon="next"/>
+                <Button label="Wrong" onclick={wrongAnswer} red icon="wrong" />
+                <Button onclick={resetLives} icon="reset" />
+                <Button onclick={switchTeam} icon="switch" />
+                <Button onclick={revealAllAnswers} icon="view" />
+                <Button label="Next" onclick={() => nextQuestion()} icon="next" />
             </div>
         </main>
     );
