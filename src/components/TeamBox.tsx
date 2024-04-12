@@ -26,14 +26,14 @@ let TeamBox = ({ name, points, isTurn, lives, updateScore }: TeamBoxProps) => {
         <div
             className={
                 isTurn
-                    ? "w-24 bg-[#040c68] border-[#FFB104] border-2 rounded-lg text-center drop"
-                    : "w-24 bg-[#040c68] border-[#1075B1] border-2 rounded-lg text-center"
+                    ? "w-32 h-32 bg-[#040c68] border-[#FFB104] border-2 rounded-lg text-center drop flex flex-col items-center justify-around"
+                    : "w-32 h-32 bg-[#040c68] border-[#1075B1] border-2 rounded-lg text-center flex flex-col items-center justify-around"
             }>
             <h2
                 className={
                     isTurn
-                        ? "text-[#FFB104] font-bold my-2"
-                        : "text-white my-2"
+                        ? "text-[#FFB104] font-bold my-2 text-lg"
+                        : "text-white my-2 text-lg"
                 }>
                 {name}
             </h2>
@@ -55,7 +55,7 @@ let TeamBox = ({ name, points, isTurn, lives, updateScore }: TeamBoxProps) => {
                 </div>
             ) : (
                 <button
-                    className="font-semibold text-2xl text-center h-full mb-4 text-white"
+                    className="font-semibold text-4xl text-center h-full mb-4 text-white"
                     onClick={() => setIsEditingScore(true)}>
                     {points}
                 </button>

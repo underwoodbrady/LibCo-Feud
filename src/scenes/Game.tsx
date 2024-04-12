@@ -92,6 +92,7 @@ let Game = () => {
     }
 
     let revealAnswer = (answer: number) => {
+        if(answerRevealed[answer] == true) return;
         setAnswerRevealed({ ...answerRevealed, [answer]: true })
         updateTeamScore(currentTeam, answers[answer].value)
     }
