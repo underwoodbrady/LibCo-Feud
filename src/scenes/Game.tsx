@@ -5,6 +5,9 @@ import Button from "../components/Button";
 import { useCallback, useEffect, useState } from "react";
 import { createFullArr } from "../data/getDataset";
 import { AnswerType, QuestionList } from "../types/GameTypes";
+import useSound from 'use-sound';
+import correctSFX from '../assets/correct.mp3';
+import incorrectSFX from '../assets/incorrect.mp3';
 import Icon from "../assets/icons";
 
 const randomizeOrder = false;
@@ -16,6 +19,16 @@ let Game = () => {
     let [answers, setAnswers] = useState<AnswerType[]>([]);
     let [revealAll, setRevealAll] = useState<boolean>(false);
     let [showWrong, setShowWrong] = useState<boolean>(false);
+
+    const [playCorrect] = useSound(
+        correctSFX,
+        { volume: 1}
+      );
+
+    const [playIncorrect] = useSound(
+        incorrectSFX,
+        { volume: 0.5}
+      );
 
     let [teamScores, setTeamScores] = useState({
         team1: 0,
@@ -93,6 +106,7 @@ let Game = () => {
 
     let revealAnswer = (answer: number) => {
         if(answerRevealed[answer] == true) return;
+        playCorrect();
         setAnswerRevealed({ ...answerRevealed, [answer]: true })
         updateTeamScore(currentTeam, answers[answer].value)
     }
@@ -120,6 +134,7 @@ let Game = () => {
     };
 
     let wrongAnswer = () => {
+        playIncorrect();
         removeTeamLife(currentTeam);
         setShowWrong(true);
         setTimeout(() => {
